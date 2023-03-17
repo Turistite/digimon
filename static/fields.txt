@@ -1,0 +1,5 @@
+bank,200,100,free,yes
+bank,200,100,free,yes
+pesho,300,100,ipote,no
+gosho,200,100,bougth,yes
+bank,200,100,free,yes
