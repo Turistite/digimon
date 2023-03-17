@@ -4,7 +4,7 @@ class Field:
     self.owner = False # default for owned by the bank
     self.level = 0 # 1 if not property
     self.price = price
-    self.rents = rents.split(',')
+    self.rents = [int(x) for x in rents.split(',')]
     self.status = 'free' # купено, ипотекирано, свободно
     self.building_type = building_type
 
