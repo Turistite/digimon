@@ -19,7 +19,7 @@ class Player:
         self.position %= board_size
 
     def buy(self, field, amount=False):
-        self.pay(False, field.price if not amount else amount)
+        self.pay(field.price if not amount else amount)
         field.owner = self
         field.status = Status.BOUGHT
 
