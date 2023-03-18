@@ -32,24 +32,31 @@ GPIO.setup(COL_4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 # function to read each row and each column
 def readRow(line, characters):
     GPIO.output(line, GPIO.LOW)
+    ch = '$'
     if(GPIO.input(COL_1) == GPIO.LOW):
-        print(characters[0])
+        ch = characters[0]
     if(GPIO.input(COL_2) == GPIO.LOW):
-        print(characters[1])
+        ch = characters[1]
     if(GPIO.input(COL_3) == GPIO.LOW):
-        print(characters[2])
+        ch = characters[2]
     if(GPIO.input(COL_4) == GPIO.LOW):
-        print(characters[3])
+        ch = characters[3]
     GPIO.output(line, GPIO.HIGH)
+    return ch
 
-# Endless loop by checking each row 
-try:
+def read_from_keyboard(): 
     while True:
-        readRow(ROW_1, ["1","2","3","A"])
-        readRow(ROW_2, ["4","5","6","B"])
-        readRow(ROW_3, ["7","8","9","C"])
-        readRow(ROW_4, ["*","0","#","D"])
+        ch = readRow(ROW_1, ["1","2","3","A"])
+        if ch!='$':
+            return ch
+        ch = readRow(ROW_2, ["4","5","6","B"])
+        if ch!='$':
+            return ch
+        ch = readRow(ROW_3, ["7","8","9","C"])
+        if ch!='$':
+            return ch
+        ch = readRow(ROW_4, ["*","0","#","D"])
+        if ch!='$':
+            return ch
         time.sleep(0.2) # adjust this per your own setup
-except KeyboardInterrupt:
-    print("\nKeypad Application Interrupted!")
-    GPIO.cleanup()
+
