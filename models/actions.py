@@ -8,3 +8,4 @@ class Action(Enum):
     PRISON = 4
     CHANCHE = 5
     OTHER = 6 # todo add real ones
+    PENDING = 7
