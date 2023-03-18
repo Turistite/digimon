@@ -20,19 +20,12 @@ def read_nfc_card():
     print("read_nfc_card")
 
 
-def get_player_by_id(id):
-    return id
-
-
-def try_read_nfc_card():
-    print("try_read_nfc_card")
-
-
 def display_on_screen(text):
     print("display_on_screen")
 
 
 def auction():
+    print("Enter auction function")
     value = gameState.fields[gameState.players[gameState.curr_player].position].price
     value = int(COEF_AUCTION*value)
     step = int(COEF_STEP*value)
@@ -40,8 +33,8 @@ def auction():
     current_owner = -1
 
     while time.time() <= (start+5):
-        printText(value, 1)
-        id = try_read_nfc_card()
+        printText(str(value), 1)
+        id = try_to_read()
         if id != -1:
             lcd_clear()
             current_owner = get_player_by_id(id)
@@ -50,14 +43,15 @@ def auction():
             value += step
 
     if current_owner != -1:
-        # TODO buy with specific value
-        printText("Successfully bought for " + value, 1)
+        # gameState.players[current_owner].buy(game
+        printText("Successfully bought for " +value, 1)
         time.sleep(1.5)
 
     print("auction")
 
 
 def buy():
+    print("Enter buy function")
     gameState.players[gameState.curr_player].buy(
         gameState.fields[gameState.players[gameState.curr_player].position]
     )
@@ -70,10 +64,11 @@ def process_turn(status):
         buy()
         await_end_of_turn()
     elif status == Action.PENDING:
+        print("pending action")
         id = wait_for_a_card()
         if id == nfc_id_auction:
             auction()
-        elif (id == gameState.players[gameState.curr_player]):
+        elif (id == gameState.players[gameState.curr_player].id):
             buy()
         else:
             print("Error")
@@ -89,12 +84,12 @@ def players_id():
     players_count = int(num_players)
     lcd_clear()
     printText("Numbers of players: " + num_players, 1)
-    time.sleep(3)
+    time.sleep(0.2)
     lcd_clear()
     list_id = []
     for i in range(players_count):
         printText("Scan player " + str(i+1) + " card", 2)
-        time.sleep(1.5)
+        time.sleep(0.5)
         curr_id = wait_for_a_card()
         list_id.append(curr_id)
         print(list_id)
@@ -139,3 +134,4 @@ while True:
     state = gameState.dice(moves)
     print("After")
     process_turn(state)
+    gameState.end_turn()
