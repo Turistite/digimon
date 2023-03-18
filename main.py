@@ -10,6 +10,9 @@ COEF_AUCTION = 0.7
 COEF_STEP = 0.05
 TIMEOUT = 5
 
+def print_cell_info():
+    print (gameState.fields[gameState.players[gameState.curr_player].position])
+    
 def print_info():
     for player in gameState.players:
         print (str(player.color) + str(player.balance))
@@ -139,13 +142,17 @@ def players_id():
     players_count = int(num_players)
     lcd_clear()
     printText("Numbers of players: " + num_players, 1)
-    time.sleep(0.2)
+    time.sleep(1)
     lcd_clear()
     list_id = []
+    printText("Scan player " + str(1) + " card", 2)
     for i in range(players_count):
-        printText("Scan player " + str(i+1) + " card", 2)
-        time.sleep(0.5)
+        
         curr_id = wait_for_a_card()
+        lcd_clear()
+        if i < players_count-1:
+            printText("Scan player " + str(i+2) + " card", 2)
+        time.sleep(1)
         list_id.append(curr_id)
         print(list_id)
         lcd_clear()
@@ -163,28 +170,33 @@ gameState = GameState(players_ID)
 
 while True:
     printText("Enter what dices have been thrown!", 1)
-    time.sleep(1)
+    time.sleep(2)
     lcd_clear()
-    printText("Dice one:", 1)
+    printText("player " + str(gameState.curr_player), 1)
+    printText("Dice one:", 2)
     moves = [0, 0]
     moves[0] = read_from_keyboard()
     while moves[0] < "1" or moves[0] > "6":
         moves[0] = read_from_keyboard()
         lcd_clear()
-        printText("Dice one:", 1)
+        printText("player " + str(gameState.curr_player), 1)
+        printText("Dice one:", 2)
     lcd_clear()
-    printText("Dice one:" + moves[0], 1)
-    printText("Dice two:", 2)
+    printText("player " + str(gameState.curr_player), 1)
+    printText("Dice one:" + moves[0], 2)
+    printText("Dice two:", 3)
     time.sleep(1)
     moves[1] = read_from_keyboard()
     while moves[1] < "1" or moves[1] > "6":
         moves[1] = read_from_keyboard()
-        printText("Dice two:", 2)
+        printText("Dice two:", 3)
         lcd_clear()
-    printText("Dice one:" + moves[0], 1)
-    printText("Dice two:" + moves[1], 2)
-    time.sleep(0.8)
+    printText("player " + str(gameState.curr_player), 1)
+    printText("Dice one:" + moves[0], 2)
+    printText("Dice two:" + moves[1], 3)
+    time.sleep(1)
     lcd_clear()
     state = gameState.dice(moves)
+    print_cell_info()
     process_turn(state)
     gameState.end_turn(moves)
