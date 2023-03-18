@@ -91,7 +91,7 @@ def players_id():
       list_id.append(curr_id)
       print(list_id)
       lcd_clear()
-     return list_id
+    return list_id
 
 
 players_ID = players_id()
