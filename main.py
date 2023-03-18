@@ -72,12 +72,15 @@ def players_id():
     printText("Number of players:",1)
     #num_players = inputFromKeyboard()
     num_players = 4
+    time.sleep(3)
     lcd_clear()
     list_id = []
     for i in range(num_players):
-      printText("Scan " + str(i) + "th player card", 2)
+      printText("Scan player " + str(i+1) + " card", 2)
+      time.sleep(1.5)
       curr_id = wait_for_a_card()
       list_id.append(curr_id)
+      print(list_id)
       lcd_clear()
     return list_id
 

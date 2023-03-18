@@ -4,7 +4,7 @@ from game.utils.enums import *
 
 class GameState:
     def __init__(self, ids):
-        f = open('static/fields.txt', 'r')
+        f = open('/home/pi/digimon/game/static/fields.txt', 'r')
         self.fields = [
             Field(line.rstrip('\n').split(';'))
             for line in f.readlines()
