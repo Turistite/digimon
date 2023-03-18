@@ -1,4 +1,5 @@
-from game.game_state import *
+from game.game_state import GameState
+from game.utils.enums import Action
 from hardware.CardRead import *
 import time
 
@@ -85,19 +86,21 @@ def players_id():
     lcd_clear()
     list_id = []
     for i in range(num_players):
-      printText("Scan player " + str(i+1) + " card", 2)
-      time.sleep(1.5)
-      curr_id = wait_for_a_card()
-      list_id.append(curr_id)
-      print(list_id)
-      lcd_clear()
+        printText("Scan player " + str(i+1) + " card", 2)
+        time.sleep(1.5)
+        curr_id = wait_for_a_card()
+        list_id.append(curr_id)
+        print(list_id)
+        lcd_clear()
     return list_id
 
 
 def proccess_action():
-    #TODO stuff 
+    # TODO stuff
     # proccessing functions
     print("Something")
+
+
 players_ID = players_id()
 gameState = GameState(players_ID)
 

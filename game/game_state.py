@@ -7,7 +7,7 @@ class GameState:
     def __init__(self, ids):
         f = open('/home/pi/digimon/game/static/fields.txt', 'r')
         self.fields = [
-            Field(1,line.rstrip('\n').split(';'))
+            Field(1, line.rstrip('\n').split(';'))
             for line in f.readlines()
         ]
 
@@ -23,7 +23,7 @@ class GameState:
         curr_player = self.players[self.curr_player]
         curr_field = self.fields[curr_player.position]
 
-        if (curr_field.building_type == FieldType.PRISON
+        if (curr_field.building_type.name == FieldType.PRISON.name
                 and curr_player.captured > 0
                 and not self.jail(points)):
             return Action.NOTHING
@@ -31,21 +31,22 @@ class GameState:
         curr_player.move(points, len(self.fields))
 
         if (curr_field.owner == curr_player
-                or curr_field.status == Status.MORTGAGED
+                or curr_field.status.name == Status.MORTGAGED.name
                 or curr_field.get_rent(points) == 0):
             return Action.NOTHING
 
-        if curr_field.status == Status.BOUGHT:
+        print(curr_field)
+        if curr_field.status.name == Status.BOUGHT.name:
             # payment to owner   ???
             return Action.PAYMENT
 
-        if curr_field.status == Status.FREE:
+        if curr_field.status.name == Status.FREE.name:
             return Action.PENDING
         # if curr_field.status == FieldType.ARREST
         # TODO cover case for Status.SPECIAL
 
     def jail(self, dice):
-        if(dice[0] == dice[1]):
+        if (dice[0] == dice[1]):
             self.curr_player.captured = 0
             return True
         elif (False):  # TODO
@@ -58,7 +59,7 @@ class GameState:
     def upgrade_property(self, prop_ids):
         props_for_upgrade = filter(lambda f: f.id in prop_ids, self.fields)
 
-        # TODO: check if the player owns the whole neighbourhood
+        # TODO: check if the player meets the conditions to upgrade
         for p in props_for_upgrade:
             p.upgrade()
             self.players[self.curr_player].pay(0.6 * p.price)
