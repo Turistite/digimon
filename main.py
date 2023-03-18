@@ -49,7 +49,7 @@ def read_nfc_card():
     print("read_nfc_card")
 
 def auction():
-    
+
     lcd_clear()
     print("Enter auction function")
     printText("--Auction--",1)
@@ -99,14 +99,14 @@ def process_turn(status):
     if status == Action.NOTHING:
         await_end_of_turn()
     elif status == Action.PAYMENT:
-        printText("Pay rent:" + str(curr_field.get_rent(die)), 2)
+        printText("Pay rent: " + str(curr_field.get_rent(die)), 2)
         id = wait_for_a_card()
         while id != gameState.players[gameState.curr_player].id:
             printText("Invalid card!", 3)
             id = wait_for_a_card()
         curr_player.pay(curr_field.get_rent(die), curr_field.owner)
         lcd_clear()
-        printText("Rent successfully paid")
+        printText("Rent successfully paid", 2)
         time.sleep(2)
         lcd_clear()
         await_end_of_turn()
@@ -118,6 +118,9 @@ def process_turn(status):
             time.sleep(1)
             auction()
         elif (id == gameState.players[gameState.curr_player].id):
+            printText("Successfully bought", 2)
+            time.sleep(1.5)
+            lcd_clear()
             buy()
             await_end_of_turn()
         else:
