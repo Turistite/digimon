@@ -5,7 +5,7 @@ class Action(Enum):
     PAYMENT = 2
     AUCTION = 3
     PRISON = 4
-    CHANCHE = 5
+    CHANCE = 5
     OTHER = 6 # todo add real ones
     PENDING = 7
 
