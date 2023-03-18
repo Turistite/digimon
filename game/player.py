@@ -4,7 +4,7 @@ class Player:
         self.color = color
         self.balance = balance
         self.position = position
-
+        self.captured = 0
     def move(self, n_tiles, board_size):
         self.position += n_tiles
         # Check if the player has passed the start field

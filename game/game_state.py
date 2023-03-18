@@ -22,8 +22,11 @@ class GameState:
         curr_player = self.players[self.curr_player]
         curr_field = self.fields[curr_player.position]
 
-        curr_player.position += points
 
+        if curr_field.building_type == FieldType.PRISON and curr_player.captured > 0 and (not self.jail(points)):
+               return Action.NOTHING
+        
+        
         curr_player.move(points, len(self.fields))
 
         if curr_field.owner == curr_player or curr_field.status == Status.MORTGAGED or curr_field.get_rent() == 0:
@@ -35,9 +38,19 @@ class GameState:
 
         if curr_field.status == Status.FREE:
             return Action.PENDING
-
+        #if curr_field.status == FieldType.ARREST 
         # TODO cover case for Status.SPECIAL
 
+    def jail(self,dice):
+        if(dice[0] == dice[1]):
+            self.curr_player.captured = 0 
+            return True
+        elif (False): # TODO
+            return  True
+           # TODO prompt if the player wants to pay to be free
+        else: 
+            self.curr_player.captured -= 1
+            return False
 
     def upgrade_property(self, prop_ids):
         return # TODO

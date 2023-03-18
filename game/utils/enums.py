@@ -16,6 +16,7 @@ class Status(Enum):
     BOUGHT = 2
     MORTGAGED = 3
     SPECIAL = 4
+    
 
 
 class Color(Enum):
