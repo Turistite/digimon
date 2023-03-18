@@ -28,11 +28,11 @@ class Field:
         assert (self.level < len(self.rents))
 
     def mortgage(self):
-        assert (self.status == Status.BOUGHT)
+        assert (self.status.name == Status.BOUGHT.name)
         self.status = Status.MORTGAGED
 
     def immortgage(self):
-        assert (self.status == Status.MORTGAGED)
+        assert (self.status.name == Status.MORTGAGED.name)
         self.status = Status.BOUGHT
 
     def show(self):

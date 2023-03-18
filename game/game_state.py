@@ -65,8 +65,8 @@ class GameState:
             p.upgrade()
             self.players[self.curr_player].pay(0.6 * p.price)
 
-    def end_turn(self):
+    def end_turn(self, moves):
         if self.players[self.curr_player].captured > 0:
             self.players[self.curr_player].captured -= 1
-
-        self.curr_player = (self.curr_player + 1) % len(self.players)
+        if moves[0] != moves[1]:
+           self.curr_player = (self.curr_player + 1) % len(self.players)

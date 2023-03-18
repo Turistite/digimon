@@ -31,12 +31,13 @@ def await_end_of_turn():
         # TODO  upgrade_property(
         await_end_of_turn()
     elif key == "A":
-        # TODO morgrage
+        print("")
+        # TODO mortgage
     elif key == "B":
+        print("")
         # TODO immortgage
     else:
-        end_turn()
-    # TODO button
+        return 
 #TODO Eventually other turns
 
 def read_nfc_card():
@@ -159,4 +160,4 @@ while True:
     lcd_clear()
     state = gameState.dice(moves)
     process_turn(state)
-    gameState.end_turn()
+    gameState.end_turn(moves)
