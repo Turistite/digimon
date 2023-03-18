@@ -2,7 +2,6 @@ from game.utils.enums import Status, FieldType
 
 class Field:
     def __init__(self, id, prop_list):
-        print(prop_list)
         field_type, price, rents = prop_list
         # False means that its owned by the bank
         # "" would work too

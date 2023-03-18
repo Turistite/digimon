@@ -2,20 +2,19 @@ import RPi.GPIO as GPIO
 import time
 
 # Set the Row Pins
-ROW_1 = 17
-ROW_2 = 27
-ROW_3 = 22
-ROW_4 = 5
+ROW_1 = 11
+ROW_2 = 13
+ROW_3 = 15
+ROW_4 = 29
 
 # Set the Column Pins
-COL_1 = 23
-COL_2 = 24
-COL_3 = 12
-COL_4 = 16
+COL_1 = 16
+COL_2 = 18
+COL_3 = 32
+COL_4 = 36
 
 GPIO.setwarnings(False)
 # BCM numbering
-GPIO.setmode(GPIO.BCM)
 
 # Set Row pins as output
 GPIO.setup(ROW_1, GPIO.OUT)

@@ -1,5 +1,6 @@
 from game.game_state import *
 from hardware.CardRead import *
+from hardware.keyboard import *
 import time
 
 nfc_id_auction = 633367768675
@@ -79,12 +80,17 @@ def process_turn(status):
 
 def players_id():
     printText("Number of players:", 1)
-    #num_players = inputFromKeyboard()
-    num_players = 4
+    num_players = read_from_keyboard()
+    while num_players < "1" or num_players >  "6":
+       printText("Enter the number of the players again",2)
+       num_players = read_from_keyboard()
+    players_count = int(num_players)
+    lcd_clear()
+    printText("Numbers of players: " + num_players,1)
     time.sleep(3)
     lcd_clear()
     list_id = []
-    for i in range(num_players):
+    for i in range(players_count):
       printText("Scan player " + str(i+1) + " card", 2)
       time.sleep(1.5)
       curr_id = wait_for_a_card()
@@ -102,7 +108,30 @@ players_ID = players_id()
 gameState = GameState(players_ID)
 
 while True:
-    #moves = inputFromKeyboard()
-    moves = 5
+    printText("Enter what dices have been thrown!" ,1)
+    time.sleep(1) 
+    lcd_clear()
+    printText("Dice one:",1)
+    moves = [0,0]
+    moves[0] = read_from_keyboard()
+    while moves[0] < "1" or moves[0] > "6":
+       moves[0] = read_from_keyboard()
+       lcd_clear()
+       printText("Dice one:",1)
+    lcd_clear()
+    printText("Dice one:" + moves[0],1)
+    printText("Dice two:",2)
+    time.sleep(1)
+    moves[1] = read_from_keyboard()
+    while moves[1] < "1" or moves[1] > "6":
+      moves[1] = read_from_keyboard()
+      printText("Dice two:",2)
+      lcd_clear()
+    printText("Dice one:" + moves[0], 1)
+    printText("Dice two:" + moves[1], 2)
+    print("Before")
+    time.sleep(0.8)
+    lcd_clear()
     state = gameState.dice(moves)
+    print("After")
     process_turn(state)

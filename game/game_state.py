@@ -28,7 +28,7 @@ class GameState:
                 and not self.jail(points)):
             return Action.NOTHING
 
-        curr_player.move(points, len(self.fields))
+        curr_player.move(int(points[0])+int(points[1]), len(self.fields))
 
         if (curr_field.owner == curr_player
                 or curr_field.status == Status.MORTGAGED
