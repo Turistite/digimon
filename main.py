@@ -12,17 +12,35 @@ TIMEOUT = 5
 
 
 def await_end_of_turn():
-    print("await_end_of_turn")
+    printText("\# to see balance",1)
+    printText("* to upgrade",2)
+    printText("A/B to mortgage",3)
+    printText("any other to end the turn",4)
+    key =  read_from_keyboard()
+    # ti si tuka !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # wzima 1 character ot keyboard
+    # ako precenish gi  mesti w keyboard.py inche tuka
+    if key=='#':
+        lcd_clean() # proveri towa li izchistwashe dyskata !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        pintText("Your balance is: " + str(gameState.players[gameState.curr_player].balance),2)
+        time.sleep(3)
+        lcd_clean()
+        await_end_of_turn()
+    elif key == "*":
+        # unknown
+        # TODO  upgrade_property(
+        await_end_of_turn()
+    elif key == "A":
+        # TODO morgrage
+    elif key == "B":
+        # TODO immortgage
+    else:
+        end_turn()
     # TODO button
-
+#TODO Eventually other turns
 
 def read_nfc_card():
     print("read_nfc_card")
-
-
-def display_on_screen(text):
-    print("display_on_screen")
-
 
 def auction():
     print("Enter auction function")
@@ -52,7 +70,7 @@ def auction():
         printText("Successfully bought for " +str(value), 1)
         time.sleep(1.5)
 
-    print("auction")
+    await_end_of_turn()
 
 
 def buy():
@@ -76,9 +94,12 @@ def process_turn(status):
             auction()
         elif (id == gameState.players[gameState.curr_player].id):
             buy()
+            await_end_of_turn()
         else:
-            print("Error")
+            printText("Card not valid",2)
+            process_turn(status)
             # TBD retry read_nfc_card
+
 
 
 def players_id():
@@ -134,10 +155,8 @@ while True:
         lcd_clear()
     printText("Dice one:" + moves[0], 1)
     printText("Dice two:" + moves[1], 2)
-    print("Before")
     time.sleep(0.8)
     lcd_clear()
     state = gameState.dice(moves)
-    print("After")
     process_turn(state)
     gameState.end_turn()
