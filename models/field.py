@@ -3,7 +3,7 @@ from fieldStatus import *
 
 class Field:
     def __init__(self, prop_list):
-        building_type, rents, price = prop_list
+        building_type, price, rents = prop_list
         self.owner = False  # default for owned by the bank
         self.level = 0
         self.price = price

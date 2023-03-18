@@ -6,8 +6,7 @@ from actions import *
 
 class GameState:
     def __init__(self, ids):
-        f = open(
-            'C:\\Users\\KaloyanTs\\Documents\\GitHub\\FMI_Codes\\digimon\\static\\fields.txt', 'r')
+        f = open('../static/fields.txt', 'r')
         self.fields = [Field(l.rstrip('\n').split(';')) for l in f.readlines()]
 
         ids_and_colors = zip(ids, all_colors[1:len(ids)])
