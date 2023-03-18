@@ -27,12 +27,15 @@ def await_end_of_turn():
         lcd_clean()
         await_end_of_turn()
     elif key == "*":
+        print("")
         # unknown
         # TODO  upgrade_property(
         await_end_of_turn()
     elif key == "A":
+        print("")
         # TODO morgrage
     elif key == "B":
+        print("")
         # TODO immortgage
     else:
         end_turn()
