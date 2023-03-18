@@ -1,4 +1,5 @@
-from game.game_state import *
+from game.game_state import GameState
+from game.utils.enums import Action
 from hardware.CardRead import *
 from hardware.keyboard import *
 import time
@@ -101,9 +102,11 @@ def players_id():
 
 
 def proccess_action():
-    #TODO stuff 
+    # TODO stuff
     # proccessing functions
     print("Something")
+
+
 players_ID = players_id()
 gameState = GameState(players_ID)
 
