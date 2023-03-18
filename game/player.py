@@ -13,9 +13,13 @@ class Player:
 
         self.position %= board_size
 
-    def buy(self, field):
+    def buy(self, field, amount=False):
+        if not amount:
+            self.pay(False, field.get_rent())
+        else:
+            self.pay(False, amount)
+
         field.owner = self
-        self.pay(False, field.get_rent())
 
     def pay(self, recipient, amount):
         self.balance -= amount
@@ -25,12 +29,3 @@ class Player:
 
     def show(self):
         print(self.id, self.color, self.balance, self.position)
-
-
-def main():
-    gs = Player(1, 'red', 1000, 0)
-    gs.show()
-
-
-if __name__ == "__main__":
-    main()
