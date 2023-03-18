@@ -5,29 +5,43 @@ from game.utils.enums import *
 class GameState:
     def __init__(self, ids):
         f = open('static/fields.txt', 'r')
-        self.fields = [Field(l.rstrip('\n').split(';')) for l in f.readlines()]
+        self.fields = [
+            Field(line.rstrip('\n').split(';'))
+            for line in f.readlines()
+        ]
 
-        ids_and_colors = zip(ids, all_colors[1:len(ids)])
-        # NOTE: The initial balance is usually 15mil
-        self.players = list(map(lambda pair: Player(
-            pair[0], pair[1], 15000, 0), ids_and_colors))
+        ids_and_colors = zip(ids, PLAYER_COLORS[1:len(ids)])
+        self.players = [
+            Player(id, color, 1500, 0)
+            for id, color in ids_and_colors
+        ]
+
         self.curr_player = 0
 
     def dice(self, points):
-        self.players[self.curr_player].position += points
-        if self.players[self.curr_player].position >= len(self.fields):
-            # passed the 'start' field
-            self.players[self.curr_player].balance += self.fields[0].get_rent()
-        self.players[self.curr_player].position %= len(self.fields)
-        if self.fields[self.players[self.curr_player].position].owner == self.players[self.curr_player] or self.fields[self.players[self.curr_player].position].status == Status.MORTGAGED or self.fields[self.players[self.curr_player].position].get_rent() == 0:
+        curr_player = self.players[self.curr_player]
+        curr_field = self.fields[curr_player.position]
+
+        curr_player.position += points
+
+        # Check if the player has passed the start field
+        if curr_player.position >= len(self.fields):
+            curr_player.balance += self.fields[0].get_rent()
+            curr_player.position %= len(self.fields)
+
+        if curr_field.owner == curr_player or curr_field.status == Status.MORTGAGED or curr_field.get_rent() == 0:
             return Action.NOTHING
-        if self.fields[self.players[self.curr_player].position].status == Status.BOUGHT:
+
+        if curr_field.status == Status.BOUGHT:
             # payment to owner   ???
             return Action.PAYMENT
-        if self.fields[self.players[self.curr_player].position].status == Status.FREE:
+
+        if curr_field.status == Status.FREE:
             return Action.OTHER
             # to be determined  ???
             # buying or auctioning or nothing
+
+        # TODO cover case for Status.SPECIAL
 
     def end_turn(self):
         self.curr_player = (self.curr_player+1) % len(self.players)
@@ -61,6 +75,7 @@ def main():
     print(gs.players[gs.curr_player].balance)
     gs.dice(6)
     print(gs.players[gs.curr_player].balance)
+
 
 if __name__ == "__main__":
     main()
