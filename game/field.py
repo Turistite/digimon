@@ -18,8 +18,8 @@ class Field:
         self.building_type = FieldType[field_type.upper()]
 
     def get_rent(self, die_sum):
-        if len(self.rents) == 0:
-            return int(self.price)
+        if not self.rents:
+            return self.price
         elif self.building_type == FieldType.SERVICES:
             return self.rents[self.level] * die_sum
         else:
