@@ -20,11 +20,12 @@ def await_end_of_turn():
     printText("0 to see balance",1)
     printText("* to upgrade",2)
     printText("A/B to mortgage",3)
-    printText("any other to end the turn",4)
+    printText("any other to end",4)
     key =  read_from_keyboard()
     if key=='0':
         lcd_clear()
-        printText("Your balance is: " + str(gameState.players[gameState.curr_player].balance),2)
+        printText("Your balance is: ",2)
+        printText(str(gameState.players[gameState.curr_player].balance),3)
         time.sleep(3)
         lcd_clear()
         await_end_of_turn()
@@ -48,7 +49,10 @@ def read_nfc_card():
     print("read_nfc_card")
 
 def auction():
+    
+    lcd_clear()
     print("Enter auction function")
+    printText("--Auction--",1)
     value = gameState.fields[gameState.players[gameState.curr_player].position].price
     value = int(COEF_AUCTION*value)
     field = gameState.fields[gameState.players[gameState.curr_player].position]
@@ -58,22 +62,24 @@ def auction():
     wait=0
     while wait<5:
         wait+=1
-        printText(str(value), 1)
+        printText("Current price:",2)
+        printText(str(value), 3)
         id = try_to_read()
         if id:
             lcd_clear()
             print(id)
             current_owner = gameState.get_player_by_id(id)
             start = time.time()
-            time.sleep(1)
+            #time.sleep(1)
             value += step
             wait=0
         time.sleep(1)
 
     if current_owner:
         current_owner.buy(field,value)
-        printText("Successfully bought for " +str(value), 1)
+        printText("Successfully bought for " + str(value), 1)
         time.sleep(1.5)
+        lcd_clear()
 
     await_end_of_turn()
 
@@ -93,10 +99,20 @@ def process_turn(status):
     if status == Action.NOTHING:
         await_end_of_turn()
     elif status == Action.PAYMENT:
+        printText("Pay rent:" + str(curr_field.get_rent(die)), 2)
+        id = wait_for_a_card()
+        while id != gameState.players[gameState.curr_player].id:
+            printText("Invalid card!", 3)
+            id = wait_for_a_card()
         curr_player.pay(curr_field.get_rent(die), curr_field.owner)
+        lcd_clear()
+        printText("Rent successfully paid")
+        time.sleep(2)
+        lcd_clear()
         await_end_of_turn()
     elif status == Action.PENDING:
         print("pending action")
+        printText("Buy or start auction", 2)
         id = wait_for_a_card()
         if id == nfc_id_auction:
             time.sleep(1)
