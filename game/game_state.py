@@ -63,6 +63,7 @@ class GameState:
                 return Action.NOTHING
 
         curr_player.move(die1 + die2, len(self.fields))
+        curr_field = self.fields[curr_player.position]
 
         if (curr_field.owner == curr_player
                 or curr_field.status.name == Status.MORTGAGED.name
