@@ -27,6 +27,19 @@ class Color(Enum):
     WHITE = 6
 
 
+class FieldType(Enum):
+    START = 1
+    PROPERTY = 2
+    CHEST = 3
+    TAX = 4
+    TRAIN = 5
+    CHANCE = 6
+    PRISON = 7
+    SERVICES = 8
+    PARKING = 9
+    ARREST = 10
+
+
 PLAYER_COLORS = [
     Color.RED,
     Color.GREEN,

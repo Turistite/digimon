@@ -34,14 +34,16 @@ class GameState:
             return Action.PAYMENT
 
         if curr_field.status == Status.FREE:
-            return Action.OTHER
-            # to be determined  ???
-            # buying or auctioning or nothing
+            return Action.PENDING
 
         # TODO cover case for Status.SPECIAL
 
+
+    def upgrade_property(self, prop_ids):
+        return # TODO
+
     def end_turn(self):
-        self.curr_player = (self.curr_player+1) % len(self.players)
+        self.curr_player = (self.curr_player + 1) % len(self.players)
 
 
 def main():

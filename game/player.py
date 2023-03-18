@@ -14,11 +14,7 @@ class Player:
         self.position %= board_size
 
     def buy(self, field, amount=False):
-        if not amount:
-            self.pay(False, field.get_rent())
-        else:
-            self.pay(False, amount)
-
+        self.pay(False, field.price if not amount else amount)
         field.owner = self
 
     def pay(self, recipient, amount):
