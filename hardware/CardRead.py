@@ -13,4 +13,4 @@ def wait_for_a_card():
 
 def try_to_read():
   id, text = CardReader.read_no_block()
-  return id;
+  return id

@@ -19,6 +19,14 @@ class GameState:
 
         self.curr_player = 0
 
+    def get_player_by_id(self, id):
+        players_with_id = filter(lambda p: p.id == id, self.players)
+        if players_with_id:
+            h, *_ = list(players_with_id)
+            return h
+        else:
+            return False
+
     def dice(self, points):
         die1 = int(points[0])
         die2 = int(points[1])
