@@ -1,4 +1,4 @@
-from game.utils.enums import Action, Status, PLAYER_COLORS, FieldType
+from game.utils.enums import Action, Status, FieldType, PLAYER_COLORS
 from game.player import Player
 from game.field import Field
 
@@ -7,7 +7,7 @@ class GameState:
     def __init__(self, ids):
         f = open('/home/pi/digimon/game/static/fields.txt', 'r')
         self.fields = [
-            Field(1, line.rstrip('\n').split(';'))
+            Field(line.rstrip('\n').split(';'))
             for line in f.readlines()
         ]
 
@@ -19,18 +19,40 @@ class GameState:
 
         self.curr_player = 0
 
+    def __get_current_player(self):
+        return self.players[self.curr_player]
+
+    def __get_colored_fields(self, color):
+        return filter(lambda f: f.color == color, self.fields)
+
+    def __can_upgrade_property(self, player, field):
+        neighbourhood = self.__get_colored_fields(field.color)
+        levels = map(lambda n: n.level, neighbourhood)
+
+        return (
+            field.building_type.name == FieldType.PROPERTY.name
+            and player.balance >= field.price * 0.6
+            and all(map(lambda n: n.owner == player, neighbourhood))
+            and max(levels) - min(levels) <= 1
+        )
+
     def get_player_by_id(self, id):
         for p in self.players:
             if p.id == id:
                 return p
         return False
 
+    def get_field_by_id(self, id):
+        for f in self.fields:
+            if f.id == id:
+                return f
+        return False
 
     def dice(self, points):
         die1 = int(points[0])
         die2 = int(points[1])
 
-        curr_player = self.players[self.curr_player]
+        curr_player = self.__get_current_player()
         curr_field = self.fields[curr_player.position]
 
         if (curr_field.building_type.name == FieldType.PRISON.name
@@ -57,16 +79,21 @@ class GameState:
         # if curr_field.status == FieldType.ARREST
         # TODO cover case for Status.SPECIAL
 
-    def upgrade_property(self, prop_ids):
-        props_for_upgrade = filter(lambda f: f.id in prop_ids, self.fields)
+    def upgrade_property(self, property):
+        # TODO: Use this in the future:
+        #  property = self.get_field_by_id(id)
+        curr_player = self.__get_current_player()
 
-        # TODO: check if the player meets the conditions to upgrade
-        for p in props_for_upgrade:
-            p.upgrade()
-            self.players[self.curr_player].pay(0.6 * p.price)
+        if self.__can_upgrade_property(curr_player, property):
+            property.upgrade()
+            curr_player.pay(0.6 * property.price)
+            return True
+        else:
+            return False
 
     def end_turn(self):
-        if self.players[self.curr_player].captured > 0:
-            self.players[self.curr_player].captured -= 1
+        curr_player = self.__get_current_player()
+        if curr_player.captured > 0:
+            curr_player.captured -= 1
 
         self.curr_player = (self.curr_player + 1) % len(self.players)
