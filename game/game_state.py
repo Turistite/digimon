@@ -19,7 +19,7 @@ class GameState:
 
         self.curr_player = 0
 
-    def __get_current_player(self):
+    def get_current_player(self):
         return self.players[self.curr_player]
 
     def __get_colored_fields(self, color):
@@ -52,7 +52,7 @@ class GameState:
         die1 = int(points[0])
         die2 = int(points[1])
 
-        curr_player = self.__get_current_player()
+        curr_player = self.get_current_player()
         curr_field = self.fields[curr_player.position]
 
         if (curr_field.building_type.name == FieldType.PRISON.name
@@ -83,7 +83,7 @@ class GameState:
     def upgrade_property(self, property):
         # TODO: Use this in the future:
         #  property = self.get_field_by_id(id)
-        curr_player = self.__get_current_player()
+        curr_player = self.get_current_player()
 
         if self.__can_upgrade_property(curr_player, property):
             property.upgrade()

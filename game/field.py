@@ -18,7 +18,7 @@ class Field:
         self.building_type = FieldType[field_type.upper()]
 
     def get_rent(self, die_sum):
-        if not self.rents:
+        if not self.rents or self.status.name == Status.FREE.name:
             return self.price
         elif self.building_type == FieldType.SERVICES:
             return self.rents[self.level] * die_sum

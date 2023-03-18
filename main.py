@@ -86,10 +86,14 @@ def buy():
 
 
 def process_turn(status):
+    curr_player = gameState.get_current_player()
+    curr_field = gameState.fields[curr_player.position]
+    die = 1 # TODO
+
     if status == Action.NOTHING:
         await_end_of_turn()
     elif status == Action.PAYMENT:
-        buy()
+        curr_player.pay(curr_field.get_rent(die), curr_field.owner)
         await_end_of_turn()
     elif status == Action.PENDING:
         print("pending action")
