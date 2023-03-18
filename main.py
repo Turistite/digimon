@@ -6,8 +6,6 @@ import time
 
 nfc_id_auction = 633367768675
 
-
-
 COEF_AUCTION = 0.7
 COEF_STEP = 0.05
 TIMEOUT = 5
