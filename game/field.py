@@ -10,8 +10,8 @@ class Field:
         self.id = id
 
         self.level = 0
-        self.price = price
-        self.rents = [] if rents == 'null' else rents.split(',')
+        self.price = int(price)
+        self.rents = [] if rents == 'null' else [int(r) for r in rents.split(',')]
         self.status = Status.FREE  # купено, ипотекирано, свободно
         self.building_type = FieldType[field_type.upper()]
 
