@@ -59,7 +59,8 @@ def auction():
 
 def buy():
     gameState.players[gameState.curr_player].buy(
-        gameState.players[gameState.curr_player].position)
+        gameState.fields[gameState.players[gameState.curr_player].position]
+    )
 
 
 def process_turn(status):
@@ -82,22 +83,22 @@ def process_turn(status):
 def players_id():
     printText("Number of players:", 1)
     num_players = read_from_keyboard()
-    while num_players < "1" or num_players >  "6":
-       printText("Enter the number of the players again",2)
-       num_players = read_from_keyboard()
+    while num_players < "1" or num_players > "6":
+        printText("Enter the number of the players again", 2)
+        num_players = read_from_keyboard()
     players_count = int(num_players)
     lcd_clear()
-    printText("Numbers of players: " + num_players,1)
+    printText("Numbers of players: " + num_players, 1)
     time.sleep(3)
     lcd_clear()
     list_id = []
     for i in range(players_count):
-      printText("Scan player " + str(i+1) + " card", 2)
-      time.sleep(1.5)
-      curr_id = wait_for_a_card()
-      list_id.append(curr_id)
-      print(list_id)
-      lcd_clear()
+        printText("Scan player " + str(i+1) + " card", 2)
+        time.sleep(1.5)
+        curr_id = wait_for_a_card()
+        list_id.append(curr_id)
+        print(list_id)
+        lcd_clear()
     return list_id
 
 
@@ -111,25 +112,25 @@ players_ID = players_id()
 gameState = GameState(players_ID)
 
 while True:
-    printText("Enter what dices have been thrown!" ,1)
-    time.sleep(1) 
+    printText("Enter what dices have been thrown!", 1)
+    time.sleep(1)
     lcd_clear()
-    printText("Dice one:",1)
-    moves = [0,0]
+    printText("Dice one:", 1)
+    moves = [0, 0]
     moves[0] = read_from_keyboard()
     while moves[0] < "1" or moves[0] > "6":
-       moves[0] = read_from_keyboard()
-       lcd_clear()
-       printText("Dice one:",1)
+        moves[0] = read_from_keyboard()
+        lcd_clear()
+        printText("Dice one:", 1)
     lcd_clear()
-    printText("Dice one:" + moves[0],1)
-    printText("Dice two:",2)
+    printText("Dice one:" + moves[0], 1)
+    printText("Dice two:", 2)
     time.sleep(1)
     moves[1] = read_from_keyboard()
     while moves[1] < "1" or moves[1] > "6":
-      moves[1] = read_from_keyboard()
-      printText("Dice two:",2)
-      lcd_clear()
+        moves[1] = read_from_keyboard()
+        printText("Dice two:", 2)
+        lcd_clear()
     printText("Dice one:" + moves[0], 1)
     printText("Dice two:" + moves[1], 2)
     print("Before")
