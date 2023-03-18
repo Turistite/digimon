@@ -25,6 +25,7 @@ class GameState:
                 return p
         return False
 
+
     def dice(self, points):
         die1 = int(points[0])
         die2 = int(points[1])
@@ -65,7 +66,7 @@ class GameState:
             self.players[self.curr_player].pay(0.6 * p.price)
 
     def end_turn(self):
-        if self.curr_player.captured > 0:
-            self.curr_player.captured -= 1
+        if self.players[self.curr_player].captured > 0:
+            self.players[self.curr_player].captured -= 1
 
         self.curr_player = (self.curr_player + 1) % len(self.players)

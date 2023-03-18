@@ -28,23 +28,28 @@ def auction():
     print("Enter auction function")
     value = gameState.fields[gameState.players[gameState.curr_player].position].price
     value = int(COEF_AUCTION*value)
+    field = gameState.fields[gameState.players[gameState.curr_player].position]
     step = int(COEF_STEP*value)
-    start = time.time()
-    current_owner = -1
+    current_owner = False
 
-    while time.time() <= (start+5):
+    wait=0
+    while wait<5:
+        wait+=1
         printText(str(value), 1)
         id = try_to_read()
-        if id != -1:
+        if id:
             lcd_clear()
+            print(id)
             current_owner = gameState.get_player_by_id(id)
             start = time.time()
             time.sleep(1)
             value += step
+            wait=0
+        time.sleep(1)
 
-    if current_owner != -1:
-        # gameState.players[current_owner].buy(game
-        printText("Successfully bought for " +value, 1)
+    if current_owner:
+        current_owner.buy(field,value)
+        printText("Successfully bought for " +str(value), 1)
         time.sleep(1.5)
 
     print("auction")
@@ -67,6 +72,7 @@ def process_turn(status):
         print("pending action")
         id = wait_for_a_card()
         if id == nfc_id_auction:
+            time.sleep(1)
             auction()
         elif (id == gameState.players[gameState.curr_player].id):
             buy()
