@@ -1,8 +1,6 @@
-from models.game_state import *
+from game.game_state import *
 from hardware.CardRead import *
 import time
-
-#players
 
 nfc_id_auction = 633367768675
 

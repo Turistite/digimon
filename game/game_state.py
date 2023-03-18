@@ -1,9 +1,10 @@
 from field import *
+from player import *
 from utils.enums import *
 
 class GameState:
     def __init__(self, ids):
-        f = open('../static/fields.txt', 'r')
+        f = open('static/fields.txt', 'r')
         self.fields = [Field(l.rstrip('\n').split(';')) for l in f.readlines()]
 
         ids_and_colors = zip(ids, all_colors[1:len(ids)])
@@ -60,7 +61,6 @@ def main():
     print(gs.players[gs.curr_player].balance)
     gs.dice(6)
     print(gs.players[gs.curr_player].balance)
-
 
 if __name__ == "__main__":
     main()

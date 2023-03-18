@@ -1,5 +1,4 @@
-from fieldStatus import *
-
+from utils.enums import *
 
 class Field:
     def __init__(self, prop_list):
