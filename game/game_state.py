@@ -24,10 +24,7 @@ class GameState:
 
         curr_player.position += points
 
-        # Check if the player has passed the start field
-        if curr_player.position >= len(self.fields):
-            curr_player.balance += self.fields[0].get_rent()
-            curr_player.position %= len(self.fields)
+        curr_player.move(points, len(self.fields))
 
         if curr_field.owner == curr_player or curr_field.status == Status.MORTGAGED or curr_field.get_rent() == 0:
             return Action.NOTHING

@@ -1,9 +1,13 @@
-from game.utils.enums import *
+from utils.enums import *
+
 
 class Field:
     def __init__(self, prop_list):
         building_type, price, rents = prop_list
-        self.owner = False  # default for owned by the bank
+        # False means that its owned by the bank
+        # "" would work too
+        self.owner = False
+
         self.level = 0
         self.price = price
         if rents == "null":

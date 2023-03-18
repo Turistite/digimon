@@ -1,30 +1,34 @@
 class Player:
-  def __init__(self, id, color, balance, position):
-    self.id = id
-    self.color = color
-    self.balance = balance
-    self.position = position
+    def __init__(self, id, color, balance, position):
+        self.id = id
+        self.color = color
+        self.balance = balance
+        self.position = position
 
-  def move(dice_value):
-    self.position += dice_value
+    def move(self, n_tiles, board_size):
+        self.position += n_tiles
+        # Check if the player has passed the start field
+        if self.position >= board_size:
+            self.balance += 200
 
-  def buy(field):
-    field.owner = self
-    self.pay(field.get_rent())
-  
-  def pay(recipient,amount):
-    recipient.balance+=amount
-    self.balance-=amount
+        self.position %= board_size
 
-  def pay(amount):
-    self.balance-=amount
-  
-  def show(self):
-    print(self.id , self.color , self.balance , self.position)
+    def buy(self, field):
+        field.owner = self
+        self.pay(False, field.get_rent())
+
+    def pay(self, recipient, amount):
+        self.balance -= amount
+        # If there is a recipient
+        if recipient:
+            recipient.balance += amount
+
+    def show(self):
+        print(self.id, self.color, self.balance, self.position)
 
 
 def main():
-    gs = Player(1,'red',1000,0)
+    gs = Player(1, 'red', 1000, 0)
     gs.show()
 
 
