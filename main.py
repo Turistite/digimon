@@ -37,7 +37,7 @@ def auction():
         id = try_to_read()
         if id != -1:
             lcd_clear()
-            current_owner = get_player_by_id(id)
+            current_owner = gameState.get_player_by_id(id)
             start = time.time()
             time.sleep(1)
             value += step
