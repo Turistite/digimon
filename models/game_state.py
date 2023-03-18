@@ -22,7 +22,7 @@ class GameState:
             # passed the 'start' field
             self.players[self.curr_player].balance += self.fields[0].get_rent()
         self.players[self.curr_player].position %= len(self.fields)
-        if self.fields[self.players[self.curr_player].position].owner == self.players[self.curr_player] or self.fields[self.players[self.curr_player].position].status == 'mortgaged' or self.fields[self.players[self.curr_player].position].get_rent() == 0:
+        if self.fields[self.players[self.curr_player].position].owner == self.players[self.curr_player] or self.fields[self.players[self.curr_player].position].status == Status.MORTGAGED or self.fields[self.players[self.curr_player].position].get_rent() == 0:
             return Action.NOTHING
         if self.fields[self.players[self.curr_player].position].status == Status.BOUGHT:
             # payment to owner   ???
