@@ -1,0 +1,8 @@
+statuses:
+    free
+        on stepping buying or auctionning is mandatory
+    mortgaged
+        nothing
+    bought
+        if owner different from current then pay owner else nothing
+    ??? special field
