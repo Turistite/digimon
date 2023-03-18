@@ -1,5 +1,5 @@
 import RPi.GPIO as gpio
-from lcdScreen import *
+from hardware.lcdScreen import *
 from mfrc522 import SimpleMFRC522
 CardReader = SimpleMFRC522()
 
