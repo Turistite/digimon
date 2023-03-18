@@ -1,3 +1,5 @@
+from fieldStatus import *
+
 class Field:
     def __init__(self, prop_list):
         building_type, rents, price = prop_list
@@ -24,9 +26,9 @@ class Field:
         assert (self.level < len(self.rents))
 
     def mortgage():
-      assert(self.status=='bought')
+        assert (self.status == 'bought')
         self.status = 'mortgaged'
 
     def immortgage():
-        assert(self.status=='mortgaged')
+        assert (self.status == 'mortgaged')
         self.status = 'bought'
