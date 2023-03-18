@@ -1,6 +1,7 @@
-from game.field import *
-from game.player import *
-from game.utils.enums import *
+from game.utils.enums import Action, Status, PLAYER_COLORS, FieldType
+from game.player import Player
+from game.field import Field
+
 
 class GameState:
     def __init__(self, ids):
@@ -22,9 +23,16 @@ class GameState:
         curr_player = self.players[self.curr_player]
         curr_field = self.fields[curr_player.position]
 
+        if (curr_field.building_type == FieldType.PRISON
+                and curr_player.captured > 0
+                and not self.jail(points)):
+            return Action.NOTHING
+
         curr_player.move(points, len(self.fields))
 
-        if curr_field.owner == curr_player or curr_field.status == Status.MORTGAGED or curr_field.get_rent() == 0:
+        if (curr_field.owner == curr_player
+                or curr_field.status == Status.MORTGAGED
+                or curr_field.get_rent() == 0):
             return Action.NOTHING
 
         if curr_field.status == Status.BOUGHT:
@@ -33,8 +41,19 @@ class GameState:
 
         if curr_field.status == Status.FREE:
             return Action.PENDING
-
+        # if curr_field.status == FieldType.ARREST
         # TODO cover case for Status.SPECIAL
+
+    def jail(self, dice):
+        if(dice[0] == dice[1]):
+            self.curr_player.captured = 0
+            return True
+        elif (False):  # TODO
+            return True
+           # TODO prompt if the player wants to pay to be free
+        else:
+            self.curr_player.captured -= 1
+            return False
 
     def upgrade_property(self, prop_ids):
         props_for_upgrade = filter(lambda f: f.id in prop_ids, self.fields)
@@ -46,37 +65,3 @@ class GameState:
 
     def end_turn(self):
         self.curr_player = (self.curr_player + 1) % len(self.players)
-
-
-def main():
-    gs = GameState(['Nakata', 'Kalata', 'bot1', 'bot2'])
-    for x in gs.fields:
-        x.show()
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-    gs.dice(6)
-    print(gs.players[gs.curr_player].balance)
-
-
-if __name__ == "__main__":
-    main()

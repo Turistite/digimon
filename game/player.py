@@ -1,3 +1,6 @@
+from game.utils.enums import Status
+
+
 class Player:
     # TODO: handle bankrupt
     def __init__(self, id, color, balance, position):
@@ -5,6 +8,7 @@ class Player:
         self.color = color
         self.balance = balance
         self.position = position
+        self.captured = 0
 
     def move(self, n_tiles, board_size):
         self.position += n_tiles
@@ -17,6 +21,7 @@ class Player:
     def buy(self, field, amount=False):
         self.pay(False, field.price if not amount else amount)
         field.owner = self
+        field.status = Status.BOUGHT
 
     def pay(self, amount, recipient=False):
         self.balance -= amount

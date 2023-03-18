@@ -1,5 +1,4 @@
-from game.utils.enums import *
-
+from game.utils.enums import Status, FieldType
 
 class Field:
     def __init__(self, id, prop_list):
