@@ -75,7 +75,7 @@ def players_id():
     lcd_clear()
     list_id = []
     for i in range(num_players):
-      printText("Scan" + i + "th player card")
+      printText("Scan " + str(i) + "th player card")
       curr_id = wait_for_a_card()
       list_id.append(curr_id)
       lcd_clear()
