@@ -1,4 +1,4 @@
-from utils.enums import *
+from game.utils.enums import Status, FieldType
 
 
 class Field:

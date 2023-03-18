@@ -1,4 +1,5 @@
 class Player:
+    # TODO: handle bankrupt
     def __init__(self, id, color, balance, position):
         self.id = id
         self.color = color
@@ -17,7 +18,7 @@ class Player:
         self.pay(False, field.price if not amount else amount)
         field.owner = self
 
-    def pay(self, recipient, amount):
+    def pay(self, amount, recipient=False):
         self.balance -= amount
         # If there is a recipient
         if recipient:
