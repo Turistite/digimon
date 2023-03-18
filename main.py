@@ -10,8 +10,12 @@ COEF_AUCTION = 0.7
 COEF_STEP = 0.05
 TIMEOUT = 5
 
-
+def print_info():
+    for player in gameState.players:
+        print (str(player.color) + str(player.balance))
+    
 def await_end_of_turn():
+    print_info()
     lcd_clear()
     printText("0 to see balance",1)
     printText("* to upgrade",2)
