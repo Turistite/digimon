@@ -79,8 +79,17 @@ def players_id():
       curr_id = wait_for_a_card()
       list_id.append(curr_id)
       lcd_clear()
+      time.sleep(1.5)
+    
+    printText("Loading.", 2)
+    time.sleep(0.5)
+    printText("Loading..", 2)
+    time.sleep(0.5)
+    printText("Loading...", 2)
+    time.sleep(0.5)
+    lcd_clear()
+    
     return list_id
-
 
 players_ID = players_id()
 gameState = GameState(players_ID)
