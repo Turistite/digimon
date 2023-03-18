@@ -30,7 +30,7 @@ class GameState:
         
         curr_player.move(points, len(self.fields))
 
-        if curr_field.owner == curr_player or curr_field.status == Status.MORTGAGED or curr_field.get_rent() == 0:
+        if curr_field.owner == curr_player or curr_field.status == Status.MORTGAGE or curr_field.get_rent() == 0 or curr_field.status == FieldType.PARKING:
             return Action.NOTHING
 
         if curr_field.status == Status.BOUGHT:

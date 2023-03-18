@@ -90,7 +90,10 @@ def players_id():
         lcd_clear()
     return list_id
 
-
+def proccess_action():
+    #TODO stuff 
+    # proccessing functions
+    print("Something")
 players_ID = players_id()
 gameState = GameState(players_ID)
 
