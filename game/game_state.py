@@ -1,6 +1,7 @@
-from game.field import *
-from game.player import *
-from game.utils.enums import *
+from game.utils.enums import Action, Status, PLAYER_COLORS
+from game.player import Player
+from game.field import Field
+
 
 class GameState:
     def __init__(self, ids):
