@@ -20,15 +20,20 @@ class GameState:
         self.curr_player = 0
 
     def dice(self, points):
+        die1 = int(points[0])
+        die2 = int(points[1])
+
         curr_player = self.players[self.curr_player]
         curr_field = self.fields[curr_player.position]
 
         if (curr_field.building_type.name == FieldType.PRISON.name
-                and curr_player.captured > 0
-                and not self.jail(points)):
-            return Action.NOTHING
+                and curr_player.captured > 0):
+            if die1 == 6 and die2 == 6:
+                self.captured = 0
+            else:
+                return Action.NOTHING
 
-        curr_player.move(int(points[0])+int(points[1]), len(self.fields))
+        curr_player.move(die1 + die2, len(self.fields))
 
         if (curr_field.owner == curr_player
                 or curr_field.status.name == Status.MORTGAGED.name
@@ -45,17 +50,6 @@ class GameState:
         # if curr_field.status == FieldType.ARREST
         # TODO cover case for Status.SPECIAL
 
-    def jail(self, dice):
-        if (dice[0] == dice[1]):
-            self.curr_player.captured = 0
-            return True
-        elif (False):  # TODO
-            return True
-           # TODO prompt if the player wants to pay to be free
-        else:
-            self.curr_player.captured -= 1
-            return False
-
     def upgrade_property(self, prop_ids):
         props_for_upgrade = filter(lambda f: f.id in prop_ids, self.fields)
 
@@ -65,4 +59,7 @@ class GameState:
             self.players[self.curr_player].pay(0.6 * p.price)
 
     def end_turn(self):
+        if self.curr_player.captured > 0:
+            self.curr_player.captured -= 1
+
         self.curr_player = (self.curr_player + 1) % len(self.players)
