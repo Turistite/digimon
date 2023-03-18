@@ -1,4 +1,4 @@
-from utils.enums import *
+from game.utils.enums import *
 
 class Field:
     def __init__(self, prop_list):
