@@ -93,6 +93,7 @@ def players_id():
       lcd_clear()
     return list_id
 
+
 def proccess_action():
     #TODO stuff 
     # proccessing functions

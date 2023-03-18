@@ -7,7 +7,7 @@ class GameState:
     def __init__(self, ids):
         f = open('/home/pi/digimon/game/static/fields.txt', 'r')
         self.fields = [
-            Field(line.rstrip('\n').split(';'))
+            Field(1,line.rstrip('\n').split(';'))
             for line in f.readlines()
         ]
 
@@ -30,7 +30,9 @@ class GameState:
 
         curr_player.move(points, len(self.fields))
 
-        if curr_field.owner == curr_player or curr_field.status == Status.MORTGAGE or curr_field.get_rent() == 0 or curr_field.status == FieldType.PARKING:
+        if (curr_field.owner == curr_player
+                or curr_field.status == Status.MORTGAGED
+                or curr_field.get_rent(points) == 0):
             return Action.NOTHING
 
         if curr_field.status == Status.BOUGHT:
