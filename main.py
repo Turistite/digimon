@@ -127,8 +127,8 @@ def buy():
     )
 
 
-def handle_pay(player, field, dice_value):
-    price = field.get_rent(dice_value)
+def handle_pay(player, field):
+    price = field.get_rent()
 
     if player.balance < price:
         if player.number_of_properties > 0:
@@ -141,7 +141,7 @@ def handle_pay(player, field, dice_value):
             gameState.end_turn((1, 2))
             return
 
-    player.pay(curr_field.get_rent(die), curr_field.owner)
+    player.pay(field.get_rent(), field.owner)
 
 
 def process_turn(status):
@@ -156,7 +156,7 @@ def process_turn(status):
         while id != gameState.players[gameState.curr_player].id:
             printText("Invalid card!", 3)
             id = wait_for_a_card()
-        handle_pay(curr_player, curr_field, dice_value)
+        handle_pay(curr_player, curr_field)
         lcd_clear()
         printText("Rent successfully paid", 2)
         time.sleep(2)

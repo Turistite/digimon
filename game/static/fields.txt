@@ -1,6 +1,6 @@
 null;0;start;200;null
 585512950283;1;property;60;2,10,30,90,160,250
-null;0;chest;0;null
+null;0;chance;0;null
 585513147912;1;property;60;4,20,60,180,320,450
 null;0;tax;200;null
 null;2;train;200;25,50,100,200
@@ -15,7 +15,7 @@ null;4;services;150;4,10
 585515709467;5;property;160;12,60,180,500,700,900
 null;2;train;200;25,50,100,200
 585508696419;6;property;180;14,70,200,550,750,950
-null;0;chest;0;null
+null;0;chance;0;null
 585516887536;6;property;180;14,70,200,550,750,950
 585510564814;6;property;200;16,80,220,600,800,1000
 null;0;parking;0;null
