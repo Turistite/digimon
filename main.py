@@ -149,12 +149,11 @@ def players_id():
     for i in range(players_count):
         curr_id = wait_for_a_card()
         lcd_clear()
-        if i < players_count-1:
+        if i+2 <= players_count:
             printText("Scan player " + str(i+2) + " card", 2)
         time.sleep(1)
         list_id.append(curr_id)
         print(list_id)
-        lcd_clear()
     return list_id
 
 
