@@ -62,13 +62,13 @@ def await_end_of_turn():
         await_end_of_turn()
     elif key == "A":
          lcd_clear()
-         printText("Scan the field to be morgaged", 2)
+         printText("Scan the field to be mortgaged", 2)
          id = wait_for_a_card()
          gameState.get_field_by_id(id).mortgage()
          await_end_of_turn()
     elif key == "B":
          lcd_clear()
-         printText("Scan the field that you want unmorgaged",2)
+         printText("Scan the field that you want unmortgaged",2)
          id = wait_for_a_card()
          gameState.get_field_by_id(id).unmortgage()
          await_end_of_turn()

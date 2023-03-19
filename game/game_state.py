@@ -69,7 +69,7 @@ class GameState:
              curr_player.captured = 3
              if(curr_player.balance < 50):
                 id_field = wait_for_a_card()
-                self.get_field_by_id(curr_player.position).mortgage() 
+                self.get_field_by_id(id_field).mortgage() 
              curr_player.balance -= 50
              return Action.NOTHING
         if (curr_field.owner == curr_player
@@ -79,7 +79,6 @@ class GameState:
 
         print(curr_field)
         if curr_field.status.name == Status.BOUGHT.name:
-            # payment to owner   ???
             return Action.PAYMENT
 
         if curr_field.status.name == Status.FREE.name:
@@ -87,8 +86,6 @@ class GameState:
         # TODO cover case for Status.SPECIAL
 
     def upgrade_property(self, property):
-        # TODO: Use this in the future:
-        #  property = self.get_field_by_id(id)
         curr_player = self.get_current_player()
         if self.__can_upgrade_property(curr_player, property):
             property.upgrade()
