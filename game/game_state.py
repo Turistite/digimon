@@ -18,9 +18,6 @@ class GameState:
 
         self.curr_player = 0
 
-    def get_current_player(self):
-        return self.players[self.curr_player]
-
     def __get_colored_fields(self, color):
         return filter(lambda f: f.color == color, self.fields)
 

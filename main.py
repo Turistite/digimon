@@ -2,6 +2,7 @@ from game.game_state import GameState
 from game.utils.enums import Action
 from hardware.CardRead import *
 from hardware.keyboard import *
+from game.field import *
 import time
 
 nfc_id_auction = 633367768675
@@ -38,12 +39,17 @@ def await_end_of_turn():
         # TODO  upgrade_property(
         await_end_of_turn()
     elif key == "A":
-        print("")
-        # TODO mortgage
-
+         lcd_clear()
+         printText("Scan the field to be morgaged", 2)
+         id = wait_for_a_card()
+         gameState.get_field_by_id(id).mortgage()
+         await_end_of_turn()
     elif key == "B":
-        print("")
-        # TODO immortgage
+         lcd_clear()
+         printText("Scan the field that you want unmorgaged",2)
+         id = wait_for_a_card()
+         gameState.get_field_by_id(id).unmortgage()
+         await_end_of_turn()
     else:
         return 
 #TODO Eventually other turns
@@ -98,7 +104,7 @@ def buy():
 def process_turn(status):
     curr_player = gameState.get_current_player()
     curr_field = gameState.fields[curr_player.position]
-    die = 1 # TODO
+    die = 1 # TODO soon
 
     if status == Action.NOTHING:
         await_end_of_turn()
