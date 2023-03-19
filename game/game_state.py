@@ -87,7 +87,6 @@ class GameState:
 
         if curr_field.status.name == Status.FREE.name:
             return Action.PENDING
-        # if curr_field.status == FieldType.ARREST
         # TODO cover case for Status.SPECIAL
 
     def upgrade_property(self, property):
