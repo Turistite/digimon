@@ -34,6 +34,10 @@ class Field:
         self.status = Status.MORTGAGED
         self.owner.balance += round(self.price * 0.5)
 
+    #  def buy(self, field, amount=False):
+    def unmortgage(self):
+        self.owner.buy(self, self.price * 1.1)
+
     def show(self):
         print(self.owner, self.level, self.price,
               self.rents, self.status, self.building_type)
