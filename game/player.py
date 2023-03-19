@@ -1,4 +1,5 @@
 from game.utils.enums import Status
+from game.utils.light_management import send_light_request
 
 
 class Player:
@@ -24,6 +25,7 @@ class Player:
         field.owner = self
         field.status = Status.BOUGHT
         self.number_of_properties += 1
+        send_light_request(self.position, self.color.name)
 
     def pay(self, amount, recipient=False):
         self.balance -= amount
