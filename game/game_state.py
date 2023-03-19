@@ -52,7 +52,7 @@ class GameState:
         die1 = int(points[0])
         die2 = int(points[1])
 
-        curr_player = self.__get_current_player()
+        curr_player = self.get_current_player()
         curr_field = self.fields[curr_player.position]
 
         if (curr_field.building_type.name == FieldType.PRISON.name
@@ -61,15 +61,17 @@ class GameState:
                 self.captured = 0
             else:
                 return Action.NOTHING
-
+        
         curr_player.move(die1 + die2, len(self.fields))
         curr_field = self.fields[curr_player.position]
 
+        #if (curr_field.name =)
         if (curr_field.owner == curr_player
                 or curr_field.status.name == Status.MORTGAGED.name
                 or curr_field.get_rent(points) == 0):
             return Action.NOTHING
-
+        
+        
         print(curr_field)
         if curr_field.status.name == Status.BOUGHT.name:
             # payment to owner   ???
@@ -83,8 +85,7 @@ class GameState:
     def upgrade_property(self, property):
         # TODO: Use this in the future:
         #  property = self.get_field_by_id(id)
-        curr_player = self.__get_current_player()
-
+        curr_player = self.get_current_player()
         if self.__can_upgrade_property(curr_player, property):
             property.upgrade()
             curr_player.pay(0.6 * property.price)

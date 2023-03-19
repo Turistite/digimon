@@ -7,8 +7,7 @@ CardReader = SimpleMFRC522()
 def wait_for_a_card():
    text = CardReader.read()
    print(text[0])
-   time.sleep(2)
-   lcd_clear()
+   time.sleep(0.5)
    return text[0]
 
 def try_to_read():
