@@ -4,7 +4,6 @@ class ChanceCard:
     #
     # When a player steps on a chance card,
     # he would scan it and effect() should then be called
-    def __init__(self, effect, prop_list):
-        id = prop_list
+    def __init__(self, id, effect):
         self.id = id
         self.effect = effect

@@ -1,7 +1,34 @@
 from game.utils.enums import Action, Status, FieldType, PLAYER_COLORS
 from game.player import Player
-from game.field import *
+from game.field import Field
+from game.chance_card import ChanceCard
 from hardware.CardRead import *
+
+# TODO: should ids be stringified
+c1 = ChanceCard(
+    585511354792,
+    lambda player: player.pay(50)
+)  # pay 50
+c2 = ChanceCard(
+    585513318579,
+    lambda player: player.pay(-100)
+)  # gain 100
+# goto field k & if curr > k => gain 200 from start
+c3 = ChanceCard(
+    585523997957,
+    lambda player:
+        player.move(11 - player.position)
+        if player.position <= 11
+        else 40 - player.position + 11
+)  # go to some tile and gain money from the start tile
+c4 = ChanceCard(
+    585520064580,
+    lambda player: player.pay(-100)
+)  # gain 50
+
+chance_cards = [c1, c2, c3, c4]
+
+
 class GameState:
     def __init__(self, ids):
         f = open('/home/pi/digimon/game/static/fields.txt', 'r')
@@ -15,6 +42,8 @@ class GameState:
             Player(id, color, 1500, 0)
             for id, color in ids_and_colors
         ]
+
+        self.chance_cards = chance_cards
 
         self.curr_player = 0
 
@@ -33,7 +62,6 @@ class GameState:
             # and all(map(lambda n: n.owner == player, neighbourhood))
             # and max(levels) - min(levels) <= 1
         )
-
 
     def eliminate_player(self, player):
         self.players.remove(player)
@@ -55,6 +83,12 @@ class GameState:
         print("Field id " + str_id + "NOT FOUND")
         return False
 
+    def get_chance_card_by_id(self, id):
+        for cc in self.chance_cards:
+            if cc.id == id:
+                return cc
+        return False
+
     def dice(self, points):
         die1 = int(points[0])
         die2 = int(points[1])
@@ -72,20 +106,24 @@ class GameState:
         curr_player.move(die1 + die2, len(self.fields))
         curr_field = self.fields[curr_player.position]
 
+        if (curr_field.building_type.name == FieldType.CHANCE.name):
+            card_id = wait_for_a_card()
+            self.get_chance_card_by_id(card_id).effect(curr_player)
+
         if (curr_field.building_type.name == FieldType.ARREST.name):
-             curr_player.position = 10
-             curr_player.captured = 3
-             if(curr_player.balance < 50):
+            curr_player.position = 10
+            curr_player.captured = 3
+            if curr_player.balance < 50:
                 id_field = wait_for_a_card()
-                self.get_field_by_id(id_field).mortgage() 
-             curr_player.balance -= 50
-             return Action.NOTHING
+                self.get_field_by_id(id_field).mortgage()
+            curr_player.balance -= 50
+            return Action.NOTHING
+
         if (curr_field.owner == curr_player
                 or curr_field.status.name == Status.MORTGAGED.name
                 or curr_field.get_rent(points) == 0):
             return Action.NOTHING
 
-        print(curr_field)
         if curr_field.status.name == Status.BOUGHT.name:
             return Action.PAYMENT
 
