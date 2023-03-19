@@ -12,17 +12,19 @@ TIMEOUT = 5
 
 
 def await_end_of_turn():
-    lcd_clear()
-    printText("0 to see balance",1)
+    printText("\# to see balance",1)
     printText("* to upgrade",2)
     printText("A/B to mortgage",3)
     printText("any other to end the turn",4)
     key =  read_from_keyboard()
-    if key=='0':
-        lcd_clear()
-        printText("Your balance is: " + str(gameState.players[gameState.curr_player].balance),2)
+    # ti si tuka !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # wzima 1 character ot keyboard
+    # ako precenish gi  mesti w keyboard.py inche tuka
+    if key=='#':
+        lcd_clean() # proveri towa li izchistwashe dyskata !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        pintText("Your balance is: " + str(gameState.players[gameState.curr_player].balance),2)
         time.sleep(3)
-        lcd_clear()
+        lcd_clean()
         await_end_of_turn()
     elif key == "*":
         print("")
