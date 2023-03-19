@@ -17,13 +17,13 @@ c2 = ChanceCard(
 c3 = ChanceCard(
     585523997957,
     lambda player:
-        player.move(11 - player.position)
+        player.move(11 - player.position, 40)
         if player.position <= 11
         else 40 - player.position + 11
 )  # go to some tile and gain money from the start tile
 c4 = ChanceCard(
     585520064580,
-    lambda player: player.pay(-100)
+    lambda player: player.pay(-50)
 )  # gain 50
 
 chance_cards = [c1, c2, c3, c4]
