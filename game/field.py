@@ -3,12 +3,12 @@ from game.utils.enums import Status, FieldType
 
 class Field:
     def __init__(self, prop_list):
-        color, field_type, price, rents = prop_list
+        id, color, field_type, price, rents = prop_list
         # False means that its owned by the bank
         # "" would work too
         self.owner = False
 
-        self.id = '<id-goes-here>'
+        self.id = id
         self.color = color
 
         self.level = 0
@@ -33,6 +33,10 @@ class Field:
     def mortgage(self):
         self.status = Status.MORTGAGED
         self.owner.balance += round(self.price * 0.5)
+
+    #  def buy(self, field, amount=False):
+    def unmortgage(self):
+        self.owner.buy(self, self.price * 1.1)
 
     def show(self):
         print(self.owner, self.level, self.price,
