@@ -2,7 +2,6 @@ from game.utils.enums import Action, Status, FieldType, PLAYER_COLORS
 from game.player import Player
 from game.field import Field
 
-
 class GameState:
     def __init__(self, ids):
         f = open('/home/pi/digimon/game/static/fields.txt', 'r')
@@ -19,7 +18,7 @@ class GameState:
 
         self.curr_player = 0
 
-    def __get_current_player(self):
+    def get_current_player(self):
         return self.players[self.curr_player]
 
     def __get_colored_fields(self, color):
@@ -68,6 +67,10 @@ class GameState:
         if (curr_field.building_type.name == FieldType.ARREST.name):
              curr_player.position = 10
              curr_player.captured = 3
+             if(curr_player.balance < 50):
+                get_field_by_id(2).mortgage()
+                # TODO some things with NFC
+             curr_player.balance -= 50
              return Action.NOTHING
         if (curr_field.owner == curr_player
                 or curr_field.status.name == Status.MORTGAGED.name
