@@ -65,7 +65,10 @@ class GameState:
         curr_player.move(die1 + die2, len(self.fields))
         curr_field = self.fields[curr_player.position]
 
-        #if (curr_field.name =)
+        if (curr_field.building_type.name == FieldType.ARREST.name):
+             curr_player.position = 10
+             curr_player.captured = 3
+             return Action.NOTHING
         if (curr_field.owner == curr_player
                 or curr_field.status.name == Status.MORTGAGED.name
                 or curr_field.get_rent(points) == 0):
