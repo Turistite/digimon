@@ -43,25 +43,26 @@ def await_end_of_turn():
         printText("Scan a property card", 2)
         id = wait_for_a_card()
         print(gameState.get_field_by_id(id))
-        while (gameState.get_field_by_id(id) == False) or gameState.get_field_by_id(id).owner != gameState.get_current_player():
+        while (id!=nfc_id_auction) and ((gameState.get_field_by_id(id) == False) or gameState.get_field_by_id(id).owner != gameState.get_current_player()):
             printText("Invalid card!", 3)
             id = wait_for_a_card()
         lcd_clear()
-        curr_field = gameState.get_field_by_id(id)
-        printText("Scan a card to pay", 1)
-        printText(str(curr_field.price * 0.5) + " for a house", 2)
+        if id!=nfc_id_auction:
+            curr_field = gameState.get_field_by_id(id)
+            printText("Scan a card to pay", 1)
+            printText(str(curr_field.price * 0.5) + " for a house", 2)
 
-        id_player = wait_for_a_card()
-        while id_player != gameState.players[gameState.curr_player].id:
-            printText("Invalid card!", 3)
             id_player = wait_for_a_card()
+            while id_player != gameState.players[gameState.curr_player].id:
+                printText("Invalid card!", 3)
+                id_player = wait_for_a_card()
 
-        gameState.upgrade_property(gameState.get_field_by_id(id))
+            gameState.upgrade_property(gameState.get_field_by_id(id))
 
-        lcd_clear()
-        printText("Successfully built", 2)
-        time.sleep(2)
-        lcd_clear()
+            lcd_clear()
+            printText("Successfully built", 2)
+            time.sleep(2)
+            lcd_clear()
 
         await_end_of_turn()
     elif key == "A":
@@ -81,12 +82,6 @@ def await_end_of_turn():
         await_end_of_turn()
     else:
         return
-# TODO Eventually other turns
-
-
-def read_nfc_card():
-    print("read_nfc_card")
-
 
 def auction():
 
@@ -152,12 +147,11 @@ def handle_pay(player, field, dice_value):
 def process_turn(status):
     curr_player = gameState.get_current_player()
     curr_field = gameState.fields[curr_player.position]
-    dice_value = 1  # TODO soon
 
     if status == Action.NOTHING:
         await_end_of_turn()
     elif status == Action.PAYMENT:
-        printText("Pay rent: " + str(curr_field.get_rent(die)), 2)
+        printText("Pay rent: " + str(curr_field.get_rent()), 2)
         id = wait_for_a_card()
         while id != gameState.players[gameState.curr_player].id:
             printText("Invalid card!", 3)

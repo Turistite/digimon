@@ -18,7 +18,7 @@ class Field:
         self.status = Status.FREE  # купено, ипотекирано, свободно
         self.building_type = FieldType[field_type.upper()]
 
-    def get_rent(self, die_sum):
+    def get_rent(self, die_sum= 7):
         if not self.rents or self.status.name == Status.FREE.name:
             return self.price
         elif self.building_type == FieldType.SERVICES:
