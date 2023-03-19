@@ -28,8 +28,8 @@ class GameState:
         return (
             field.building_type.name == FieldType.PROPERTY.name
             and player.balance >= field.price * 0.5
-            and all(map(lambda n: n.owner == player, neighbourhood))
-            and max(levels) - min(levels) <= 1
+            # and all(map(lambda n: n.owner == player, neighbourhood))
+            # and max(levels) - min(levels) <= 1
         )
 
     def get_current_player(self):
@@ -42,9 +42,11 @@ class GameState:
         return False
 
     def get_field_by_id(self, id):
+        str_id = str(id)
         for f in self.fields:
-            if f.id == id:
+            if f.id == str_id:
                 return f
+        print("Field id " + str_id + "NOT FOUND")
         return False
 
     def dice(self, points):

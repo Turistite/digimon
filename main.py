@@ -39,19 +39,19 @@ def await_end_of_turn():
         printText("Upgrade propery!" , 1)
         printText("Scan a property card", 2)
         id = wait_for_a_card()
-        print ( str(gameState.get_field_by_id(id).owner.price) )
-        while ( gameState.get_field_by_id(id) == False ) or gameState.get_field_by_id(id).owner != gameState.get_curr_player():
+        print ( gameState.get_field_by_id(id) )
+        while ( gameState.get_field_by_id(id) == False ) or gameState.get_field_by_id(id).owner != gameState.get_current_player():
             printText("Invalid card!",3)
             id = wait_for_a_card()
         lcd_clear()
         curr_field = gameState.get_field_by_id(id)
         printText("Scan a card to pay", 1)
-        printText(str(curr_field.price) + " for a house", 2)
+        printText(str(curr_field.price * 0.5) + " for a house", 2)
         
         id_player = wait_for_a_card()
-        while id != gameState.players[gameState.curr_player].id:
+        while id_player != gameState.players[gameState.curr_player].id:
             printText("Invalid card!", 3)
-            id = wait_for_a_card()
+            id_player = wait_for_a_card()
 
         gameState.upgrade_property(gameState.get_field_by_id(id))
 
