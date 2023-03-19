@@ -3,12 +3,12 @@ from game.utils.enums import Status, FieldType
 
 class Field:
     def __init__(self, prop_list):
-        color, field_type, price, rents = prop_list
+        id, color, field_type, price, rents = prop_list
         # False means that its owned by the bank
         # "" would work too
         self.owner = False
 
-        self.id = '<id-goes-here>'
+        self.id = id
         self.color = color
 
         self.level = 0
