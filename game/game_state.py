@@ -1,7 +1,7 @@
 from game.utils.enums import Action, Status, FieldType, PLAYER_COLORS
 from game.player import Player
-from game.field import Field
-
+from game.field import *
+from hardware.CardRead import *
 class GameState:
     def __init__(self, ids):
         f = open('/home/pi/digimon/game/static/fields.txt', 'r')
@@ -71,8 +71,8 @@ class GameState:
              curr_player.position = 10
              curr_player.captured = 3
              if(curr_player.balance < 50):
-                get_field_by_id(2).mortgage()
-                # TODO some things with NFC
+                id_field = wait_for_a_card()
+                self.get_field_by_id(curr_player.position).mortgage() 
              curr_player.balance -= 50
              return Action.NOTHING
         if (curr_field.owner == curr_player
