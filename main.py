@@ -33,9 +33,31 @@ def await_end_of_turn():
         lcd_clear()
         await_end_of_turn()
     elif key == "*":
-        print("")
-        # unknown
-        # TODO  upgrade_property(
+        print ("Upgrade property!")
+        lcd_clear()
+        printText("Upgrade propery!" , 1)
+        printText("Scan a property card", 2)
+        id = wait_for_a_card()
+        while ( gameState.get_field_by_id(id) == False ) or gameState.get_field_by_id(id).owner != gameState.curr_player:
+            printText("Invalid card!",3)
+            id = wait_for_a_card()
+        lcd_clear()
+        curr_field = gameState.get_field_by_id(id)
+        printText("Scan a card to pay", 1)
+        printText(str(curr_field.price) + " for a house", 2)
+        
+        id_player = wait_for_a_card()
+        while id != gameState.players[gameState.curr_player].id:
+            printText("Invalid card!", 3)
+            id = wait_for_a_card()
+
+        gameState.upgrade_property(gameState.get_field_by_id(id))
+
+        lcd_clear()
+        printText("Successfully built", 2)
+        time.sleep(2)
+        lcd_clear()
+
         await_end_of_turn()
     elif key == "A":
         print("")
