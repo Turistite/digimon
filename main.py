@@ -80,6 +80,7 @@ def auction():
 
     if current_owner:
         current_owner.buy(field,value)
+        lcd_clear()
         printText("Successfully bought for " + str(value), 1)
         time.sleep(1.5)
         lcd_clear()
@@ -167,6 +168,7 @@ players_ID = players_id()
 gameState = GameState(players_ID)
 
 while True:
+    lcd_clear()
     printText("Enter what dices have been thrown!", 1)
     time.sleep(2)
     lcd_clear()
