@@ -33,6 +33,7 @@ class Field:
     def mortgage(self):
         self.status = Status.MORTGAGED
         self.owner.balance += round(self.price * 0.5)
+        self.owner.number_of_properties -= 1
 
     #  def buy(self, field, amount=False):
     def unmortgage(self):

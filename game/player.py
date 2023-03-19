@@ -9,6 +9,7 @@ class Player:
         self.balance = balance
         self.position = position
         self.captured = 0
+        self.number_of_properties = 0
 
     def move(self, n_tiles, board_size):
         self.position += n_tiles
@@ -22,9 +23,11 @@ class Player:
         self.pay(field.price if not amount else amount)
         field.owner = self
         field.status = Status.BOUGHT
+        self.number_of_properties += 1
 
     def pay(self, amount, recipient=False):
         self.balance -= amount
+
         # If there is a recipient
         if recipient:
             recipient.balance += amount

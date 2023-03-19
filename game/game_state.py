@@ -22,15 +22,21 @@ class GameState:
         return filter(lambda f: f.color == color, self.fields)
 
     def __can_upgrade_property(self, player, field):
-        neighbourhood = self.__get_colored_fields(field.color)
-        levels = map(lambda n: n.level, neighbourhood)
+        # TODO: uncomment lines to enable neighbourhood condition
+        #  neighbourhood = self.__get_colored_fields(field.color)
+        #  levels = map(lambda n: n.level, neighbourhood)
 
         return (
             field.building_type.name == FieldType.PROPERTY.name
             and player.balance >= field.price * 0.5
+            and field.level < len(field.rents)
             # and all(map(lambda n: n.owner == player, neighbourhood))
             # and max(levels) - min(levels) <= 1
         )
+
+
+    def eliminate_player(self, player):
+        self.players.remove(player)
 
     def get_current_player(self):
         return self.players[self.curr_player]

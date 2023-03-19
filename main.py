@@ -11,43 +11,46 @@ COEF_AUCTION = 0.7
 COEF_STEP = 0.05
 TIMEOUT = 5
 
+
 def print_cell_info():
-    print (gameState.fields[gameState.players[gameState.curr_player].position])
-    
+    print(gameState.fields[gameState.players[gameState.curr_player].position])
+
+
 def print_info():
     for player in gameState.players:
-        print (str(player.color) + str(player.balance))
-    
+        print(str(player.color) + str(player.balance))
+
+
 def await_end_of_turn():
     print_info()
     lcd_clear()
-    printText("0 to see balance",1)
-    printText("* to upgrade",2)
-    printText("A/B to mortgage",3)
-    printText("any other to end",4)
-    key =  read_from_keyboard()
-    if key=='0':
+    printText("0 to see balance", 1)
+    printText("* to upgrade", 2)
+    printText("A/B to mortgage", 3)
+    printText("any other to end", 4)
+    key = read_from_keyboard()
+    if key == '0':
         lcd_clear()
-        printText("Your balance is: ",2)
-        printText(str(gameState.players[gameState.curr_player].balance),3)
+        printText("Your balance is: ", 2)
+        printText(str(gameState.players[gameState.curr_player].balance), 3)
         time.sleep(3)
         lcd_clear()
         await_end_of_turn()
     elif key == "*":
-        print ("Upgrade property!")
+        print("Upgrade property!")
         lcd_clear()
-        printText("Upgrade propery!" , 1)
+        printText("Upgrade propery!", 1)
         printText("Scan a property card", 2)
         id = wait_for_a_card()
-        print ( gameState.get_field_by_id(id) )
-        while ( gameState.get_field_by_id(id) == False ) or gameState.get_field_by_id(id).owner != gameState.get_current_player():
-            printText("Invalid card!",3)
+        print(gameState.get_field_by_id(id))
+        while (gameState.get_field_by_id(id) == False) or gameState.get_field_by_id(id).owner != gameState.get_current_player():
+            printText("Invalid card!", 3)
             id = wait_for_a_card()
         lcd_clear()
         curr_field = gameState.get_field_by_id(id)
         printText("Scan a card to pay", 1)
         printText(str(curr_field.price * 0.5) + " for a house", 2)
-        
+
         id_player = wait_for_a_card()
         while id_player != gameState.players[gameState.curr_player].id:
             printText("Invalid card!", 3)
@@ -62,39 +65,44 @@ def await_end_of_turn():
 
         await_end_of_turn()
     elif key == "A":
-         lcd_clear()
-         printText("Scan the field to be mortgaged", 2)
-         id = wait_for_a_card()
-         gameState.get_field_by_id(id).mortgage()
-         await_end_of_turn()
+        lcd_clear()
+        if gameState.get_current_player().number_of_properties > 0:
+            printText("Scan the field to be mortgaged", 2)
+            id = wait_for_a_card()
+            gameState.get_field_by_id(id).mortgage()
+        else:
+            printText("No properties to sale", 2)
+        await_end_of_turn()
     elif key == "B":
-         lcd_clear()
-         printText("Scan the field that you want unmortgaged",2)
-         id = wait_for_a_card()
-         gameState.get_field_by_id(id).unmortgage()
-         await_end_of_turn()
+        lcd_clear()
+        printText("Scan the field that you want unmortgaged", 2)
+        id = wait_for_a_card()
+        gameState.get_field_by_id(id).unmortgage()
+        await_end_of_turn()
     else:
-        return 
-#TODO Eventually other turns
+        return
+# TODO Eventually other turns
+
 
 def read_nfc_card():
     print("read_nfc_card")
+
 
 def auction():
 
     lcd_clear()
     print("Enter auction function")
-    printText("--Auction--",1)
+    printText("--Auction--", 1)
     value = gameState.fields[gameState.players[gameState.curr_player].position].price
     value = int(COEF_AUCTION*value)
     field = gameState.fields[gameState.players[gameState.curr_player].position]
     step = int(COEF_STEP*value)
     current_owner = False
 
-    wait=0
-    while wait<5:
-        wait+=1
-        printText("Current price:",2)
+    wait = 0
+    while wait < 5:
+        wait += 1
+        printText("Current price:", 2)
         printText(str(value), 3)
         id = try_to_read()
         if id:
@@ -102,13 +110,13 @@ def auction():
             print(id)
             current_owner = gameState.get_player_by_id(id)
             start = time.time()
-            #time.sleep(1)
+            # time.sleep(1)
             value += step
-            wait=0
+            wait = 0
         time.sleep(1)
 
     if current_owner:
-        current_owner.buy(field,value)
+        current_owner.buy(field, value)
         lcd_clear()
         printText("Successfully bought for " + str(value), 1)
         time.sleep(1.5)
@@ -124,10 +132,27 @@ def buy():
     )
 
 
+def handle_pay(player, field, dice_value):
+    price = field.get_rent(dice_value)
+
+    if player.balance < price:
+        if player.number_of_properties > 0:
+            printText("No money", 1)
+            printText("Mortgage property:", 2)
+            id = wait_for_a_card()
+            mortgage(gameState.get_field_by_id(id))
+        else:
+            gameState.eliminate_player(player)
+            gameState.end_turn((1, 2))
+            return
+
+    player.pay(curr_field.get_rent(die), curr_field.owner)
+
+
 def process_turn(status):
     curr_player = gameState.get_current_player()
     curr_field = gameState.fields[curr_player.position]
-    die = 1 # TODO soon
+    dice_value = 1  # TODO soon
 
     if status == Action.NOTHING:
         await_end_of_turn()
@@ -137,7 +162,7 @@ def process_turn(status):
         while id != gameState.players[gameState.curr_player].id:
             printText("Invalid card!", 3)
             id = wait_for_a_card()
-        curr_player.pay(curr_field.get_rent(die), curr_field.owner)
+        handle_pay(curr_player, curr_field, dice_value)
         lcd_clear()
         printText("Rent successfully paid", 2)
         time.sleep(2)
@@ -157,10 +182,9 @@ def process_turn(status):
             buy()
             await_end_of_turn()
         else:
-            printText("Card not valid",2)
+            printText("Card not valid", 2)
             process_turn(status)
             # TBD retry read_nfc_card
-
 
 
 def players_id():
@@ -185,8 +209,6 @@ def players_id():
         list_id.append(curr_id)
         print(list_id)
     return list_id
-
-
 
 
 players_ID = players_id()
