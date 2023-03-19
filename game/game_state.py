@@ -19,9 +19,6 @@ class GameState:
 
         self.curr_player = 0
 
-    def __get_current_player(self):
-        return self.players[self.curr_player]
-
     def __get_colored_fields(self, color):
         return filter(lambda f: f.color == color, self.fields)
 
@@ -35,6 +32,9 @@ class GameState:
             and all(map(lambda n: n.owner == player, neighbourhood))
             and max(levels) - min(levels) <= 1
         )
+
+    def get_current_player(self):
+        return self.players[self.curr_player]
 
     def get_player_by_id(self, id):
         for p in self.players:
