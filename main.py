@@ -147,7 +147,6 @@ def players_id():
     list_id = []
     printText("Scan player " + str(1) + " card", 2)
     for i in range(players_count):
-        
         curr_id = wait_for_a_card()
         lcd_clear()
         if i < players_count-1:
@@ -172,17 +171,17 @@ while True:
     printText("Enter what dices have been thrown!", 1)
     time.sleep(2)
     lcd_clear()
-    printText("player " + str(gameState.curr_player), 1)
+    printText("player " + str(gameState.curr_player+1), 1)
     printText("Dice one:", 2)
     moves = [0, 0]
     moves[0] = read_from_keyboard()
     while moves[0] < "1" or moves[0] > "6":
         moves[0] = read_from_keyboard()
         lcd_clear()
-        printText("player " + str(gameState.curr_player), 1)
+        printText("player " + str(gameState.curr_player+1), 1)
         printText("Dice one:", 2)
     lcd_clear()
-    printText("player " + str(gameState.curr_player), 1)
+    printText("player " + str(gameState.curr_player+1), 1)
     printText("Dice one:" + moves[0], 2)
     printText("Dice two:", 3)
     time.sleep(1)
@@ -191,7 +190,7 @@ while True:
         moves[1] = read_from_keyboard()
         printText("Dice two:", 3)
         lcd_clear()
-    printText("player " + str(gameState.curr_player), 1)
+    printText("player " + str(gameState.curr_player+1), 1)
     printText("Dice one:" + moves[0], 2)
     printText("Dice two:" + moves[1], 3)
     time.sleep(1)
