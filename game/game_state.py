@@ -101,9 +101,6 @@ class GameState:
         else:
             return False
 
-    def mortgage_property(self, field):
-        field.status = Status.MORTGAGED
-
     def end_turn(self, moves):
         if self.players[self.curr_player].captured > 0:
             self.players[self.curr_player].captured -= 1

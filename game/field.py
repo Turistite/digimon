@@ -13,7 +13,8 @@ class Field:
 
         self.level = 0
         self.price = int(price)
-        self.rents = [] if rents == 'null' else [int(r) for r in rents.split(',')]
+        self.rents = [] if rents == 'null' else [
+            int(r) for r in rents.split(',')]
         self.status = Status.FREE  # купено, ипотекирано, свободно
         self.building_type = FieldType[field_type.upper()]
 
@@ -28,6 +29,10 @@ class Field:
     def upgrade(self):
         self.level += 1
         assert (self.level < len(self.rents))
+
+    def mortgage(self):
+        self.status = Status.MORTGAGED
+        self.owner.balance += round(self.price * 0.5)
 
     def show(self):
         print(self.owner, self.level, self.price,
