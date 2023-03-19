@@ -31,7 +31,7 @@ class GameState:
 
         return (
             field.building_type.name == FieldType.PROPERTY.name
-            and player.balance >= field.price * 0.6
+            and player.balance >= field.price * 0.5
             and all(map(lambda n: n.owner == player, neighbourhood))
             and max(levels) - min(levels) <= 1
         )
@@ -61,20 +61,20 @@ class GameState:
                 self.captured = 0
             else:
                 return Action.NOTHING
-        
+
         curr_player.move(die1 + die2, len(self.fields))
         curr_field = self.fields[curr_player.position]
 
         if (curr_field.building_type.name == FieldType.ARREST.name):
-             curr_player.position = 10
-             curr_player.captured = 3
-             return Action.NOTHING
+            curr_player.position = 10
+            curr_player.captured = 3
+            return Action.NOTHING
+
         if (curr_field.owner == curr_player
                 or curr_field.status.name == Status.MORTGAGED.name
                 or curr_field.get_rent(points) == 0):
             return Action.NOTHING
-        
-        
+
         print(curr_field)
         if curr_field.status.name == Status.BOUGHT.name:
             # payment to owner   ???
@@ -91,13 +91,16 @@ class GameState:
         curr_player = self.get_current_player()
         if self.__can_upgrade_property(curr_player, property):
             property.upgrade()
-            curr_player.pay(0.6 * property.price)
+            curr_player.pay(0.5 * property.price)
             return True
         else:
             return False
+
+    def mortgage_property(self, field):
+        field.status = Status.MORTGAGED
 
     def end_turn(self, moves):
         if self.players[self.curr_player].captured > 0:
             self.players[self.curr_player].captured -= 1
         if moves[0] != moves[1]:
-           self.curr_player = (self.curr_player + 1) % len(self.players)
+            self.curr_player = (self.curr_player + 1) % len(self.players)
